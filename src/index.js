@@ -1,27 +1,44 @@
-import './styles/test.scss';
-import lowerCase from 'lodash';
-import csvData from './data.xml';
-import xmlData from './data.csv';
+// import printMe from './print';
 
-import Icon from './images/avengers.jpg';
+// function component() {
+//   const element = document.createElement('div');
+//   const btn = document.createElement('button');
 
-// console.log(lowerCase('Hello, world!'));
+//   btn.innerHTML = 'click me and check the console!';
+//   btn.onclick = printMe;
 
-function component() {
-  // craeate element for image
-  const element = document.querySelector('img');
-  element.src = Icon;
+//   element.appendChild(btn);
 
-  // add image to DOM
-  const myName = document.querySelector('.text');
-  const text = document.createTextNode('Hello, World!');
-  myName.appendChild(text);
+//   return element;
+// }
 
-  // Loading Data
-  console.log(csvData);
-  console.log(xmlData);
+// document.body.appendChild(component());
 
-  return myName;
+// Dynamic import concept
+// function getComponent() {
+//   return import('lodash')
+//     .then((_) => {
+//       const element = document.createElement('div');
+//       element.innerHTML = _.join(['Hello', 'webpack'], '');
+
+//       return element;
+//     })
+//     .catch((error) => 'An error occurred while loading the component');
+// }
+
+// getComponent().then((component) => {
+//   document.bady.appendChild(component);
+// });
+
+// async function
+async function getComponent() {
+  const element = document.createElement('div');
+  const { default: _ } = await import('lodash');
+
+  element.innerHTML = _join(['Hello', 'webpack'], '');
+  return element;
 }
 
-component();
+getComponent().then((component) => {
+  document.body.appendChild(component);
+});

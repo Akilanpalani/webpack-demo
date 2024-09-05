@@ -1,58 +1,37 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
-// const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-// const TerserPlugin = require('terser-webpack-plugin');
+const { optimize } = require('webpack');
 
 module.exports = {
-  mode: 'development',
-  entry: './src/index.js',
+  mode: 'development', // Already avialable
+  entry: {
+    // index: './src/index.js',
+    // another: './src/another-module.js',
+    index: {
+      import: './src/index.js',
+      dependOn: 'shared',
+    },
+    another: {
+      import: './src/another-module.js',
+      dependOn: 'shared',
+    },
+    shared: 'lodash',
+  },
   output: {
+    filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js',
   },
-  module: {
-    rules: [
-      {
-        test: /\.(js|jsx)$/i,
-        exclude: /node_modules/,
-        loader: 'babel-loader',
-      },
-      {
-        test: /\.scss$/,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
-      },
-      {
-        test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
-        type: 'asset/resource',
-      },
-      {
-        test: /\.xml$/i,
-        use: ['xml-loader'],
-      },
-      {
-        test: /\.csv$/i,
-        use: ['csv-loader'],
-      },
-    ],
-  },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: './public/index.html',
-    }),
-  ],
   devServer: {
+    // dev server is already used in development initially
     static: {
       directory: path.join(__dirname, 'public'),
     },
     port: 3080,
   },
+  // Code Splitting optimization - splitChunks
   optimization: {
-    minimize: true,
-    minimizer: [
-      // new TerserPlugin(), //minimize javascript
-      new CssMinimizerPlugin(), //minimize css
-    ],
+    splitChunks: {
+      chunks: 'all',
+    },
   },
 };
