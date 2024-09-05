@@ -10,36 +10,13 @@ module.exports = {
   entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js',
-  },
-  module: {
-    rules: [
-      {
-        test: /\.(js|jsx)$/i,
-        exclude: /node_modules/,
-        loader: 'babel-loader',
-      },
-      {
-        test: /\.scss$/,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
-      },
-      {
-        test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
-        type: 'asset/resource',
-      },
-      {
-        test: /\.xml$/i,
-        use: ['xml-loader'],
-      },
-      {
-        test: /\.csv$/i,
-        use: ['csv-loader'],
-      },
-    ],
+    filename: '[name].[contenthash].js',
+    clean: true,
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './public/index.html',
+      // template: './public/index.html',
+      title: 'Caching',
     }),
   ],
   devServer: {
@@ -49,10 +26,16 @@ module.exports = {
     port: 3080,
   },
   optimization: {
-    minimize: true,
-    minimizer: [
-      // new TerserPlugin(), //minimize javascript
-      new CssMinimizerPlugin(), //minimize css
-    ],
+    moduleIds: 'deterministic',
+    runtimeChunk: 'single',
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all',
+        },
+      },
+    },
   },
 };
