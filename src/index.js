@@ -1,27 +1,15 @@
-import './styles/test.scss';
-import lowerCase from 'lodash';
-import csvData from './data.xml';
-import xmlData from './data.csv';
-
-import Icon from './images/avengers.jpg';
-
-// console.log(lowerCase('Hello, world!'));
+import printMe from './print';
 
 function component() {
-  // craeate element for image
-  const element = document.querySelector('img');
-  element.src = Icon;
+  const element = document.createElement('div');
+  const btn = document.createElement('button');
 
-  // add image to DOM
-  const myName = document.querySelector('.text');
-  const text = document.createTextNode('Hello, World!');
-  myName.appendChild(text);
+  btn.innerHTML = 'click me and check the console!';
+  btn.onclick = printMe;
 
-  // Loading Data
-  console.log(csvData);
-  console.log(xmlData);
+  element.appendChild(btn);
 
-  return myName;
+  return element;
 }
 
-component();
+document.body.appendChild(component());
