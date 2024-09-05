@@ -5,20 +5,21 @@ const { optimize } = require('webpack');
 module.exports = {
   mode: 'development', // Already avialable
   entry: {
-    index: './src/index.js',
-    print: './src/print.js',
+    // index: './src/index.js',
+    // another: './src/another-module.js',
+    index: {
+      import: './src/index.js',
+      dependOn: 'shared',
+    },
+    another: {
+      import: './src/another-module.js',
+      dependOn: 'shared',
+    },
+    shared: 'lodash',
   },
-  devtool: 'inline-source-map',
-  plugins: [
-    new HtmlWebpackPlugin({
-      title: 'Development',
-    }),
-  ],
   output: {
     filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist'),
-    clean: true,
-    publicPath: '/',
   },
   devServer: {
     // dev server is already used in development initially
@@ -27,7 +28,10 @@ module.exports = {
     },
     port: 3080,
   },
+  // Code Splitting optimization - splitChunks
   optimization: {
-    runtimeChunk: 'single',
+    splitChunks: {
+      chunks: 'all',
+    },
   },
 };

@@ -1,15 +1,44 @@
-import printMe from './print';
+// import printMe from './print';
 
-function component() {
+// function component() {
+//   const element = document.createElement('div');
+//   const btn = document.createElement('button');
+
+//   btn.innerHTML = 'click me and check the console!';
+//   btn.onclick = printMe;
+
+//   element.appendChild(btn);
+
+//   return element;
+// }
+
+// document.body.appendChild(component());
+
+// Dynamic import concept
+// function getComponent() {
+//   return import('lodash')
+//     .then((_) => {
+//       const element = document.createElement('div');
+//       element.innerHTML = _.join(['Hello', 'webpack'], '');
+
+//       return element;
+//     })
+//     .catch((error) => 'An error occurred while loading the component');
+// }
+
+// getComponent().then((component) => {
+//   document.bady.appendChild(component);
+// });
+
+// async function
+async function getComponent() {
   const element = document.createElement('div');
-  const btn = document.createElement('button');
+  const { default: _ } = await import('lodash');
 
-  btn.innerHTML = 'click me and check the console!';
-  btn.onclick = printMe;
-
-  element.appendChild(btn);
-
+  element.innerHTML = _join(['Hello', 'webpack'], '');
   return element;
 }
 
-document.body.appendChild(component());
+getComponent().then((component) => {
+  document.body.appendChild(component);
+});
